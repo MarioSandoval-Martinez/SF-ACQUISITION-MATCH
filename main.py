@@ -28,11 +28,6 @@ if Key_file:
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = Key_path
     st.success(f"✅ Key file saved and environment variable set!")
 
-# Set the path to your downloaded service account key
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = (
-    "temp\\selesforce-455620-5597ab29f1d8.json"
-)
-
 # Function to generate the template Excel file
 def generate_excel():
     Acquisition_Column_List = [
