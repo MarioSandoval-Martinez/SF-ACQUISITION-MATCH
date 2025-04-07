@@ -7,16 +7,10 @@ import json
 import jellyfish
 from time import sleep, strftime
 
-# Set the path to your downloaded service account key
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = (
-    "temp\\selesforce-455620-5597ab29f1d8.json"
-)
-
-timestr = strftime("%Y%m%d_%H%M%S_")
-
 # Define a temporary folder for storing uploaded and generated files
 TEMP_FOLDER = "temp"
 os.makedirs(TEMP_FOLDER, exist_ok=True)
+timestr = strftime("%Y%m%d_%H%M%S_")
 
 # Streamlit UI
 st.title("Salesforce Acquisition Duplicate Processing Tool")
@@ -24,14 +18,20 @@ st.title("Salesforce Acquisition Duplicate Processing Tool")
 # Key uploader
 Key_file = st.file_uploader("📂 Upload Key File", type=["json"])
 
-Key_path = None
-
+# Set the path dynamically only after the file is uploaded
 if Key_file:
     Key_path = os.path.join(TEMP_FOLDER, Key_file.name)
     with open(Key_path, "wb") as f:
         f.write(Key_file.getbuffer())
-    st.success(f"✅ Key file saved")
 
+    # Now that the file exists, set the environment variable
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = Key_path
+    st.success(f"✅ Key file saved and environment variable set!")
+
+# Set the path to your downloaded service account key
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = (
+    "temp\\selesforce-455620-5597ab29f1d8.json"
+)
 
 # Function to generate the template Excel file
 def generate_excel():
